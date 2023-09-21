@@ -1,0 +1,63 @@
+label {
+    display: block; 
+    margin-bottom: 5px; 
+    font-weight: bold; 
+  }
+  
+  input {
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid #000; /* Cor e estilo da linha desejada */
+    font-size: 16px; /* Tamanho da fonte */
+    color: #333; /* Cor do texto */
+    margin: 10px 0; /* Margem superior e inferior */
+    padding: 5px 0;
+    width: 100%; /* Espaçamento interno superior e inferior */
+  }
+  
+  button {
+    background-color: #007bff; 
+    color: #fff; 
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    margin-top: 30px;
+  }
+  
+  button:hover {
+    color: black;
+  }
+  
+  button.generate-pdf {
+    background-color: #28a745; 
+  }
+
+.div-encerramento {
+  width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 0px 10px rgba(34, 27, 27, 0.1);
+}
+ .div-abertura {
+  width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 0px 10px rgba(34, 27, 27, 0.1);
+  align-items: center;
+  margin-top: 50px;
+}
+
+.div-abertura,
+.div-encerramento {
+  flex: 1; /* Isso permite que cada div ocupe a mesma largura */
+  padding: 20px; /* Adicione algum espaço interno para espaçamento */
+}
+ 
+
+  
