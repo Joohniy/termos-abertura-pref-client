@@ -4,7 +4,7 @@ import "./cota.css";
 import Logo from "../img/brasao_osasco.png";
 import { useLocation } from "react-router-dom";
 
-export default function Cota() {
+export default function CotaSemLetras() {
   const [assinantes, setAssinantes] = useState("");
   const [cotaValues, setCotaValues] = useState({
     flcota: "",
@@ -15,6 +15,7 @@ export default function Cota() {
   });
   console.log(cotaValues)
   const { state } = useLocation();
+  console.log(state)
 
   const handleCotaValues = (e) => {
     setCotaValues((prevCotaValues) => ({
@@ -34,7 +35,7 @@ export default function Cota() {
     doc.text(stringSecretariaCota, 67, 33);
     doc.setFontSize(13);
     doc.setFont("Arial");
-    const stringPapelInformacaoCota = `Papel para informação, rubricado como folha nº ${cotaValues.flcota}`;
+    const stringPapelInformacaoCota = `Papel para informação, rubricado como folha nº ${Number(state.nfolha) + 2}`;
     const stringProcessoInformaçaoCota = `Do processo   ${state.nprocesso}/${state.anoprocesso}   de   ${state.dia}/${state.mes}/${state.ano}     Servidor(a): ${state.nome}`;
     doc.text(
       stringPapelInformacaoCota,
@@ -84,13 +85,13 @@ export default function Cota() {
     const dataAtualAbertura = new Date().toLocaleDateString();
     const stringDataAtualAbertura = `Osasco, ${dataAtualAbertura}`;
     doc.text(stringDataAtualAbertura, 80, 250);                                                                                                                        
-    doc.save("Teste");
+    doc.save(`cota_${state.nprocesso}_${state.anoprocesso}`);
   };
   return (
     <div className="div-cota">
       <h1>Cota</h1>
       <label htmlFor="flcota">Nº folha</label>
-      <input name="flcota" id="flcota" onChange={handleCotaValues} />
+      <input name="flcota" id="flcota" onChange={handleCotaValues} defaultValue={Number(state.nfolha) + 2} disabled={true} style={{color: "gray"}} />
       <label htmlFor="secretaria" >Secretaria</label>
       <input name="secretaria" id="secretaria" onChange={handleCotaValues}/>
       <label htmlFor="cargo" >Cargo</label>
