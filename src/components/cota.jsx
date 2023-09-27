@@ -104,6 +104,7 @@ export default function Cota() {
         value={assinantes}
         onChange={(e) => setAssinantes(e.target.value)}
       >
+        <option selected></option>
         <option>Valdirene Germano</option>
         <option>Gilmara Pereira dos Santos</option>
         <option>Jeni Moreira de Andrade Nery</option>

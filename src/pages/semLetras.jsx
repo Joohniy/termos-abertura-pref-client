@@ -199,16 +199,26 @@ export default function AberturaSemLetras() {
           <h2>Termo de Encerramento</h2>
           <label htmlFor="nfolha">Nº da folha</label>
           <input name="nfolha" id="nfolha" onChange={handleValues} />
-          <label htmlFor="nprocesso">Nº do processo</label>
+          <div className="input-container-n2">
+          <label htmlFor="nprocesso">Nº processo</label>
           <input name="nprocesso" id="nprocesso" onChange={handleValues} />
+          </div>
+          <div className="input-container-n2">
           <label htmlFor="anoprocesso">Ano processo</label>
           <input name="anoprocesso" id="anoprocesso" onChange={handleValues} />
-          <label htmlFor="dia-abertura">Dia da abertura do processo</label>
+          </div>
+          <div className="input-container" >
+          <label htmlFor="dia-abertura">Dia</label>
           <input name="dia" id="dia-abertura" onChange={handleValues} />
-          <label htmlFor="mes-abertura">Mes da abertura do processo</label>
+          </div>
+          <div className="input-container" >
+          <label htmlFor="mes-abertura">Mes</label>
           <input name="mes" id="mes-abertura" onChange={handleValues} />
-          <label htmlFor="ano-abertura">Ano da abertura do processo</label>
+          </div>
+          <div className="input-container" >
+          <label htmlFor="ano-abertura">Ano</label>
           <input name="ano" id="ano-abertura" onChange={handleValues} />
+          </div>
           <label htmlFor="nome">Nome</label>
           <input name="nome" id="nome" onChange={handleValues} />
           <label htmlFor="volencerrado">Nº do volume encerrado</label>
@@ -229,16 +239,28 @@ export default function AberturaSemLetras() {
           <h2>Termo de abertura</h2>
           <label htmlFor="nfolha">Nº da folha</label>
           <input disabled={disableInput} style={{color: color}} value={Number(bothValues.nfolha) + 1} name="nfolha" id="nfolha" onChange={handleValues} />
-          <label htmlFor="nprocesso">Nº do processo</label>
+          <div className="input-container-n2">
+          <label htmlFor="nprocesso">Nº processo</label>
           <input disabled={disableInput} style={{color: color}} value={bothValues.nprocesso} name="nprocesso" id="nprocesso" onChange={handleValues} />
+          </div>
+          <div className="input-container-n2">
           <label htmlFor="anoprocesso">Ano processo</label>
           <input disabled={disableInput} style={{color: color}} value={bothValues.anoprocesso} name="anoprocesso" id="anoprocesso" onChange={handleValues} />
-          <label htmlFor="dia-abertura">Dia da abertura do processo</label>
+          </div>
+          
+          <div className="input-container" >
+          <label htmlFor="dia-abertura">Dia</label>
           <input disabled={disableInput} style={{color: color}} value={bothValues.dia} name="dia" id="dia-abertura" onChange={handleValues} />
-          <label htmlFor="mes-abertura">Mes da abertura do processo</label>
+          </div>
+          <div className="input-container" >
+          <label htmlFor="mes-abertura">Mes</label>
           <input disabled={disableInput} style={{color: color}} value={bothValues.mes} name="mes" id="mes-abertura" onChange={handleValues} />
-          <label htmlFor="ano-abertura">Ano da abertura do processo</label>
+          </div>
+          <div className="input-container" >
+          <label htmlFor="ano-abertura">Ano</label>
           <input disabled={disableInput} style={{color: color}} value={bothValues.ano} name="ano" id="ano-abertura" onChange={handleValues} />
+          </div>   
+          
           <label htmlFor="nome">Nome</label>
           <input disabled={disableInput} style={{color: color}} value={bothValues.nome} name="nome" id="nome" onChange={handleValues} />
           <label htmlFor="volaberto">Nº do volume aberto</label>

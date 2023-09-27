@@ -58,6 +58,18 @@ label {
   flex: 1; /* Isso permite que cada div ocupe a mesma largura */
   padding: 20px; /* Adicione algum espaço interno para espaçamento */
 }
+
+.input-container {
+  display: inline-block;
+  margin-right: 10px; 
+  width: 31%;
+}
+
+.input-container-n2 {
+  display: inline-block;
+  margin-right: 10px; 
+  width: 48%;
+}
  
 
   
