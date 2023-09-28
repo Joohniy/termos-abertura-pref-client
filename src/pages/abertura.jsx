@@ -24,7 +24,7 @@ export default function Abertura() {
   const [valuesAbertura, setValuesAbertura] = useState({
     volaberto: valuesEncerramento.proxvolume,
     flabertura: "",
-    primeirafolha: Number(bothValues.nfolha) + 1,
+    primeirafolha: "",
   });
   const [hideDivAbertura, setHideDivAbertura] = useState(true);
   const [hideDivEncerramento, setHideDivEncerramento] = useState(false);
@@ -162,7 +162,7 @@ export default function Abertura() {
     doc.setFontSize(12);
     doc.setFont("Arial");
     const stringFirstLineAbertura = `Nesta data, na divisão de Gestão de Processos e Arquivos, procedemos a abertura`;
-    const stringSecondLineAberturaAberturaAbertura = `do volume ${valuesEncerramento.proxvolume} do processo ${bothValues.nprocesso}/${bothValues.anoprocesso} que se inicia com a folha de nº ${valuesAbertura.primeirafolha} que leva o`;
+    const stringSecondLineAberturaAberturaAbertura = `do volume ${valuesEncerramento.proxvolume} do processo ${bothValues.nprocesso}/${bothValues.anoprocesso} que se inicia com a folha de nº ${Number(valuesEncerramento.ultimafl) + 1} que leva o`;
     const stringThirdLineAberturaAbertura = `mesmo número do processo e as mesmas especificações, não sendo permitida sua separação.`;
     doc.text(
       stringFirstLineAbertura,
@@ -246,15 +246,15 @@ export default function Abertura() {
       </div>
       <div className="input-container" >
       <label htmlFor="dia-abertura">Dia</label>
-      <input name="dia" id="dia-abertura" onChange={handleValues} />
+      <input name="dia" id="dia-abertura" defaultValue={bothValues.dia} disabled={disableInput} style={{color: color}} onChange={handleValues} />
       </div>
       <div className="input-container" >
       <label htmlFor="mes-abertura">Mes</label>
-      <input name="mes" id="mes-abertura" onChange={handleValues} />
+      <input name="mes" id="mes-abertura" defaultValue={bothValues.mes} disabled={disableInput} style={{color: color}} onChange={handleValues} />
       </div>
       <div className="input-container" >
       <label htmlFor="ano-abertura">Ano</label>
-      <input name="ano" id="ano-abertura" onChange={handleValues} />
+      <input name="ano" id="ano-abertura" defaultValue={bothValues.ano} disabled={disableInput} style={{color: color}} onChange={handleValues} />
       </div>
       <label htmlFor="nome">Nome</label>
       <input disabled={disableInput} style={{color: color}} value={bothValues.nome} name="nome" id="nome" onChange={handleValues} />

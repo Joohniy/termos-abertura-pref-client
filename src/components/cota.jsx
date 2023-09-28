@@ -13,8 +13,8 @@ export default function Cota() {
     volaberto: "",
     flpedido: "",
   });
-  console.log(cotaValues)
   const { state } = useLocation();
+  console.log(state)
 
   const handleCotaValues = (e) => {
     setCotaValues((prevCotaValues) => ({
@@ -83,7 +83,7 @@ export default function Cota() {
 
     const dataAtualAbertura = new Date().toLocaleDateString();
     const stringDataAtualAbertura = `Osasco, ${dataAtualAbertura}`;
-    doc.text(stringDataAtualAbertura, 80, 250);                                                                                                                        
+    doc.text(stringDataAtualAbertura, 85, 250);                                                                                                                        
     doc.save("Teste");
   };
   return (

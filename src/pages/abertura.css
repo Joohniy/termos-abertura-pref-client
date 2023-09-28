@@ -40,6 +40,7 @@ label {
   border-radius: 5px;
   background-color: #f9f9f9;
   box-shadow: 0px 0px 10px rgba(34, 27, 27, 0.1);
+  margin-top: 100px;
 }
  .div-abertura {
   width: 600px;
@@ -50,7 +51,7 @@ label {
   background-color: #f9f9f9;
   box-shadow: 0px 0px 10px rgba(34, 27, 27, 0.1);
   align-items: center;
-  margin-top: 50px;
+  margin-top: 140px;
 }
 
 .div-abertura,

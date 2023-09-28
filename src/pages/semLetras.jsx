@@ -185,7 +185,7 @@ export default function AberturaSemLetras() {
           165,
           { align: "center" }
         );
-        doc.setFontSize(16.5);
+        doc.setFontSize(14);
         const dataAtualAbertura = new Date().toLocaleDateString();
         const stringDataAtualAbertura = `Osasco, ${dataAtualAbertura}`;
         doc.text(stringDataAtualAbertura, 80, 250);                                                                                                                        
