@@ -36,7 +36,7 @@ export default function CotaSemLetras() {
     doc.setFontSize(13);
     doc.setFont("Arial");
     const stringPapelInformacaoCota = `Papel para informação, rubricado como folha nº ${Number(state.nfolha) + 2}`;
-    const stringProcessoInformaçaoCota = `Do processo   ${state.nprocesso}/${state.anoprocesso}   de   ${state.dia}/${state.mes}/${state.ano}     Servidor(a): ${state.nome}`;
+    const stringProcessoInformaçaoCota = `Do processo   ${state.nprocesso}/${state.anoprocesso}   de   ${state.date}     Servidor(a): ${state.nome}`;
     doc.text(
       stringPapelInformacaoCota,
       doc.internal.pageSize.getWidth() / 1.6,
@@ -84,7 +84,7 @@ export default function CotaSemLetras() {
 
     const dataAtualAbertura = new Date().toLocaleDateString();
     const stringDataAtualAbertura = `Osasco, ${dataAtualAbertura}`;
-    doc.text(stringDataAtualAbertura, 80, 250);                                                                                                                        
+    doc.text(stringDataAtualAbertura, 85, 250);                                                                                                                        
     doc.save(`cota_${state.nprocesso}_${state.anoprocesso}`);
   };
   return (
@@ -105,7 +105,7 @@ export default function CotaSemLetras() {
         value={assinantes}
         onChange={(e) => setAssinantes(e.target.value)}
       >
-        <option selected></option>
+        <option defaultValue={assinantes}></option>
         <option>Valdirene Germano</option>
         <option>Gilmara Pereira dos Santos</option>
         <option>Jeni Moreira de Andrade Nery</option>

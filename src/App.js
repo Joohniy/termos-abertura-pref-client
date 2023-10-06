@@ -8,7 +8,7 @@ import CotaSemLetras from "./components/cotaSemLetra";
 
 function App() {
   return (
-    <div>
+    <div className="app-div" >
       <div>
          <Sidebar />
       </div>

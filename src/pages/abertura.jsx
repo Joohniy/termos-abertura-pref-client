@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import "./abertura.css";
 import Logo from "../img/brasao_osasco.png";
 import { useLocation, useNavigate } from "react-router-dom";
+import { TiDelete } from "react-icons/ti"
 
 export default function Abertura() {
+  const [formattedDate, setformattedDate] = useState("");
   const [bothValues, setBothValues] = useState({
     nfolha: "",
     nprocesso: "",
+    date: formattedDate,
     anoprocesso: "",
-    dia: "",
-    mes: "",
-    ano: "",
     nome: "",
   });
   const [valuesEncerramento, setValuesEncerramento] = useState({
@@ -33,13 +33,45 @@ export default function Abertura() {
 
   const navigate = useNavigate();
   const { state } = useLocation();
-  
+  const formatDate = (input) => {
+    let newValue = input.replace(/\D/g, '');
+
+    if (newValue.length >= 2) {
+      newValue = newValue.slice(0, 2) + "/" + newValue.slice(2)
+    }
+    if(newValue.length >= 5) {
+      newValue = newValue.slice(0, 5) + "/" + newValue.slice(5)
+    }
+    setformattedDate(newValue);
+  };
+
+  useEffect(() => {
+    setBothValues((prevValues) => ({
+      ...prevValues,
+      date: formattedDate,
+    }));
+  }, [formattedDate]);
+
+  const handleFormattedDate = (e) => {
+    const inputValue = e.target.value;
+      formatDate(inputValue);
+      handleValues(e)
+  };
   const handleValues = (e) => {
     setBothValues((prevBothValues) => ({
       ...prevBothValues,
       [e.target.name]: e.target.value,
     }));
   };
+  const handleDeleteDate = () => {
+    setformattedDate("");
+    setBothValues((prevBothValues) => ({
+      ...prevBothValues,
+      date: "",
+    }))
+  };
+  console.log(bothValues.date);
+
 
   const handleAbertura = (e) => {
     setValuesAbertura((prevValuesAbertura) => ({
@@ -71,7 +103,7 @@ export default function Abertura() {
     navigate({
       pathname: '/cota', 
     }, {
-      state: bothValues
+      state: bothValues,
     });
   }
 
@@ -87,7 +119,7 @@ export default function Abertura() {
     doc.setFontSize(13);
     doc.setFont("Arial");
     const stringPapelInformacao = `Papel para informação, rubricado como folha nº ${bothValues.nfolha}/A`;
-    const stringProcessoInformaçao = `Do processo   ${bothValues.nprocesso}/${bothValues.anoprocesso}   de   ${bothValues.dia}/${bothValues.mes}/${bothValues.ano}     Servidor(a): ${bothValues.nome}`;
+    const stringProcessoInformaçao = `Do processo   ${bothValues.nprocesso}/${bothValues.anoprocesso}   de   ${formattedDate}     Servidor(a): ${bothValues.nome}`;
     doc.text(
       stringPapelInformacao,
       doc.internal.pageSize.getWidth() / 1.6,
@@ -140,7 +172,7 @@ export default function Abertura() {
     doc.setFontSize(13);
     doc.setFont("Arial");
     const stringPapelInformacaoAbertura = `Papel para informação, rubricado como folha nº ${bothValues.nfolha}/B`;
-    const stringProcessoInformaçaoAbertura = `Do processo   ${bothValues.nprocesso}/${bothValues.anoprocesso}   de   ${bothValues.dia}/${bothValues.mes}/${bothValues.ano}     Servidor(a): ${bothValues.nome}`;
+    const stringProcessoInformaçaoAbertura = `Do processo   ${bothValues.nprocesso}/${bothValues.anoprocesso}   de   ${formattedDate}     Servidor(a): ${bothValues.nome}`;
     doc.text(
       stringPapelInformacaoAbertura,
       doc.internal.pageSize.getWidth() / 1.6,
@@ -191,41 +223,46 @@ export default function Abertura() {
     );
   };
 
+
   const encerramento = (
     <div hidden={hideDivEncerramento} className="div-encerramento">
       <h2>Termo de Encerramento</h2>
-      <label htmlFor="nfolha">Nº da folha</label>
+      <label htmlFor="nfolha">Nº da folha:</label>
       <input name="nfolha" id="nfolha" onChange={handleValues} />
-      <div className="input-container-n2">
-      <label htmlFor="nprocesso">Nº processo</label>
+
+      <div className="input-container">
+      <label htmlFor="nprocesso">Nº processo:</label>
       <input name="nprocesso" id="nprocesso" onChange={handleValues} />
       </div>
-      <div className="input-container-n2">
-      <label htmlFor="anoprocesso">Ano processo</label>
+      <div className="input-container">
+      <label htmlFor="anoprocesso">Ano processo:</label>
       <input name="anoprocesso" id="anoprocesso" onChange={handleValues} />
       </div>
-      <div className="input-container" >
-      <label htmlFor="dia-abertura">Dia</label>
-      <input name="dia" id="dia-abertura" onChange={handleValues} />
+      <div className="input-container-date">
+      <label htmlFor="teste">Data de abertura:</label>
+      <input  className="input-date" name="dataAbertura" type="text" onChange={handleFormattedDate} value={formattedDate} />
+      <TiDelete className="ti-delete" onClick={() => handleDeleteDate()} />
       </div>
-      <div className="input-container" >
-      <label htmlFor="mes-abertura">Mes</label>
-      <input name="mes" id="mes-abertura" onChange={handleValues} />
-      </div>
-      <div className="input-container" >
-      <label htmlFor="ano-abertura">Ano</label>
-      <input name="ano" id="ano-abertura" onChange={handleValues} />
-      </div>
-      <label htmlFor="nome">Nome</label>
+      <div className="input-container-nome" >
+      <label htmlFor="nome">Nome:</label>
       <input name="nome" id="nome" onChange={handleValues} />
-      <label htmlFor="volencerrado">Nº do volume encerrado</label>
-      <input name="volencerrado" id="volencerrado" onChange={handleEncerramento} />
-      <label htmlFor="primeirafl">Nº primeira folha</label>
+      </div>
+      <div className="input-container-folha">
+      <label htmlFor="primeirafl">Nº primeira folha:</label>
       <input name="primeirafl" id="primeirafl" onChange={handleEncerramento} />
-      <label htmlFor="ultimafl">Nº última folha</label>
+      </div>
+      <div className="input-container-folha">
+      <label htmlFor="ultimafl">Nº última folha:</label>
       <input name="ultimafl" id="ultimafl" onChange={handleEncerramento} />
-      <label htmlFor="proxvolume">Volume que vai ser aberto</label>
+      </div>
+      <div className="input-container-vol">
+      <label htmlFor="volencerrado">Volume encerrado:</label>
+      <input className="input-volencerrado" name="volencerrado" id="volencerrado" onChange={handleEncerramento} />
+      </div>
+      <div className="input-container-vol" >
+      <label htmlFor="proxvolume">Volume que vai ser aberto:</label>
       <input name="proxvolume" id="proxvolume" onChange={handleEncerramento} />
+      </div>
       <div>
         <button onClick={() => handleTermoEncerramento()}>Gerar termo de abertura</button>
       </div>
@@ -234,34 +271,33 @@ export default function Abertura() {
   const abertura = (
     <div hidden={hideDivAbertura} className="div-abertura">
       <h2>Termo de abertura</h2>
-      <label htmlFor="nfolha">Nº da folha</label>
+      <label htmlFor="nfolha">Nº da folha:</label>
       <input disabled={disableInput} style={{color: color}} value={bothValues.nfolha} name="nfolha" id="nfolha" onChange={handleValues} />
-      <div className="input-container-n2">
-      <label htmlFor="nprocesso">Nº processo</label>
+      <div className="input-container">
+      <label htmlFor="nprocesso">Nº processo:</label>
       <input disabled={disableInput} style={{color: color}} value={bothValues.nprocesso} name="nprocesso" id="nprocesso" onChange={handleValues} />
       </div> 
-      <div className="input-container-n2">
-      <label htmlFor="anoprocesso">Ano processo</label>
+      <div className="input-container">
+      <label htmlFor="anoprocesso">Ano processo:</label>
       <input disabled={disableInput} style={{color: color}} value={bothValues.anoprocesso} name="anoprocesso" id="anoprocesso" onChange={handleValues} />
       </div>
-      <div className="input-container" >
-      <label htmlFor="dia-abertura">Dia</label>
-      <input name="dia" id="dia-abertura" defaultValue={bothValues.dia} disabled={disableInput} style={{color: color}} onChange={handleValues} />
+      <div className="input-container-date">
+      <label htmlFor="teste">Data de abertura:</label>
+      <input disabled={disableInput} className="input-date" name="dataAbertura" type="text" onChange={handleFormattedDate} value={formattedDate} />
+      <TiDelete className="ti-delete" onClick={() => handleDeleteDate()} />
       </div>
-      <div className="input-container" >
-      <label htmlFor="mes-abertura">Mes</label>
-      <input name="mes" id="mes-abertura" defaultValue={bothValues.mes} disabled={disableInput} style={{color: color}} onChange={handleValues} />
+      <div className="input-container-nome" >
+      <label htmlFor="nome">Nome:</label>
+      <input disabled={disableInput} style={{color:color}} className="input-nome" name="nome" id="nome" onChange={handleValues} value={bothValues.nom} />
       </div>
-      <div className="input-container" >
-      <label htmlFor="ano-abertura">Ano</label>
-      <input name="ano" id="ano-abertura" defaultValue={bothValues.ano} disabled={disableInput} style={{color: color}} onChange={handleValues} />
-      </div>
-      <label htmlFor="nome">Nome</label>
-      <input disabled={disableInput} style={{color: color}} value={bothValues.nome} name="nome" id="nome" onChange={handleValues} />
-      <label htmlFor="volaberto">Nº do volume aberto</label>
-      <input name="volaberto" id="volaberto" onChange={handleAbertura} value={valuesEncerramento.proxvolume} disabled={disableInput} style={{color: color}} />
-      <label htmlFor="primeirafolha">Nº folha inicial</label>
+      <div className="input-container-folha">
+      <label htmlFor="primeirafolha">Nº folha inicial:</label>
       <input name="primeirafolha" id="primeirafolha" onChange={handleAbertura} value={Number(bothValues.nfolha) + 1} disabled={disableInput} style={{color: color}} />
+      </div>
+      <div className="input-container-vol">
+      <label htmlFor="volaberto">Nº do volume aberto:</label>
+      <input name="volaberto" id="volaberto" onChange={handleAbertura} value={valuesEncerramento.proxvolume} disabled={disableInput} style={{color: color}} />
+      </div>
       <div>
         <button onClick={() => generatePDF()}>Gerar pdf</button>
         <button onClick={() => navigateToCota()}>Gerar Cota</button>

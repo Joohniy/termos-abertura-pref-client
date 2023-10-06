@@ -14,7 +14,7 @@ export default function Cota() {
     flpedido: "",
   });
   const { state } = useLocation();
-  console.log(state)
+  console.log(state);
 
   const handleCotaValues = (e) => {
     setCotaValues((prevCotaValues) => ({
@@ -35,7 +35,7 @@ export default function Cota() {
     doc.setFontSize(13);
     doc.setFont("Arial");
     const stringPapelInformacaoCota = `Papel para informação, rubricado como folha nº ${cotaValues.flcota}`;
-    const stringProcessoInformaçaoCota = `Do processo   ${state.nprocesso}/${state.anoprocesso}   de   ${state.dia}/${state.mes}/${state.ano}     Servidor(a): ${state.nome}`;
+    const stringProcessoInformaçaoCota = `Do processo   ${state.nprocesso}/${state.anoprocesso}   de   ${state.date}     Servidor(a): ${state.nome}`;
     doc.text(
       stringPapelInformacaoCota,
       doc.internal.pageSize.getWidth() / 1.6,
@@ -84,7 +84,7 @@ export default function Cota() {
     const dataAtualAbertura = new Date().toLocaleDateString();
     const stringDataAtualAbertura = `Osasco, ${dataAtualAbertura}`;
     doc.text(stringDataAtualAbertura, 85, 250);                                                                                                                        
-    doc.save("Teste");
+    doc.save(`cota_${state.nprocesso}_${state.anoprocesso}`);
   };
   return (
     <div className="div-cota">
@@ -104,7 +104,7 @@ export default function Cota() {
         value={assinantes}
         onChange={(e) => setAssinantes(e.target.value)}
       >
-        <option selected></option>
+        <option defaultValue={assinantes}></option>
         <option>Valdirene Germano</option>
         <option>Gilmara Pereira dos Santos</option>
         <option>Jeni Moreira de Andrade Nery</option>
