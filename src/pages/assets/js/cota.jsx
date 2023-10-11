@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { jsPDF } from "jspdf";
-import "./cota.css";
-import Logo from "../img/brasao_osasco.png";
+import "./../css/cota.css";
+import Logo from "./../../../img/brasao_osasco.png";
 import { useLocation } from "react-router-dom";
 
 export default function Cota() {

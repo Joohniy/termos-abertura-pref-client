@@ -7,9 +7,9 @@ label {
   input {
     border: none;
     background-color: transparent;
-    border-bottom: 1px solid #000; /* Cor e estilo da linha desejada */
+    border-bottom: 1px solid #000000;
     font-size: 16px; /* Tamanho da fonte */
-    color: #333; /* Cor do texto */
+    color: #000000; /* Cor do texto */
     margin: 10px 0; /* Margem superior e inferior */
     padding: 5px 0;
     width: 100%; /* Espaçamento interno superior e inferior */

@@ -1,10 +1,10 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Abertura from "./pages/abertura";
-import Cota from "./components/cota";
+import Abertura from "./pages/assets/js/abertura";
+import Cota from "./pages/assets/js/cota";
 import Sidebar from "./components/sidebar";
-import AberturaSemLetras from "./pages/semLetras";
-import CotaSemLetras from "./components/cotaSemLetra";
+import AberturaSemLetras from "./pages/assets/js/semLetras";
+import CotaSemLetras from "./pages/assets/js/cotaSemLetra";
 
 function App() {
   return (
