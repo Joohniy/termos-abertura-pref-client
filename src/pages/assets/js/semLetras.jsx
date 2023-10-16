@@ -282,7 +282,7 @@ export default function AberturaSemLetras() {
     <div hidden={hideDivAbertura} className="div-abertura">
       <h2>Termo de abertura</h2>
       <label htmlFor="nfolha">Nº da folha:</label>
-      <input disabled={disableInput} style={{color: color}} value={bothValues.nfolha} name="nfolha" id="nfolha" onChange={handleValues} />
+      <input name="nfolha" disabled={disableInput} style={{color: color}} value={Number(bothValues.nfolha) + 1} id="nfolha" onChange={handleValues} />
       <div className="input-container">
       <label htmlFor="nprocesso">Nº processo:</label>
       <input disabled={disableInput} style={{color: color}} value={bothValues.nprocesso} name="nprocesso" id="nprocesso" onChange={handleValues} />
