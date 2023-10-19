@@ -13,9 +13,7 @@ export default function CotaSemLetras() {
     volaberto: "",
     flpedido: "",
   });
-  console.log(cotaValues)
   const { state } = useLocation();
-  console.log(state)
 
   const handleCotaValues = (e) => {
     setCotaValues((prevCotaValues) => ({

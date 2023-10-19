@@ -3,13 +3,13 @@ import { jsPDF } from "jspdf";
 import "./../css/abertura.css";
 import Logo from "./../../../img/brasao_osasco.png";
 import { useNavigate } from "react-router-dom";
-import { TiDelete } from "react-icons/ti";
+import validateRoman from "../../../utils/roman";
 
 export default function Abertura() {
   const [formattedDate, setformattedDate] = useState("");
   const [bothValues, setBothValues] = useState({
     nfolha: "",
-    nprocesso: "",
+    nprocesso: 0,
     date: formattedDate,
     anoprocesso: "",
     nome: "",
@@ -33,15 +33,15 @@ export default function Abertura() {
   const navigate = useNavigate();
 
   const formatDate = (input) => {
-    let newValue = input.replace(/\D/g, "");
-
-    if (newValue.length >= 2) {
-      newValue = newValue.slice(0, 2) + "/" + newValue.slice(2);
+  let newValue = input.replace(/\D/g, ""); 
+  let formattedValue = "";
+  for (let i = 0; i < newValue.length; i++) {
+    if (i === 2 || i === 4) {
+      formattedValue += "/";
     }
-    if (newValue.length >= 5) {
-      newValue = newValue.slice(0, 5) + "/" + newValue.slice(5);
-    }
-    setformattedDate(newValue);
+    formattedValue += newValue[i];
+  }
+  setformattedDate(formattedValue);
   };
 
   useEffect(() => {
@@ -60,13 +60,6 @@ export default function Abertura() {
     setBothValues((prevBothValues) => ({
       ...prevBothValues,
       [e.target.name]: e.target.value,
-    }));
-  };
-  const handleDeleteDate = () => {
-    setformattedDate("");
-    setBothValues((prevBothValues) => ({
-      ...prevBothValues,
-      date: "",
     }));
   };
   const handleAbertura = (e) => {
@@ -91,7 +84,66 @@ export default function Abertura() {
       setColorDisable("grey");
     }
   };
+  const validateForm = () => {
+    if (!bothValues.nfolha) return false;
+    if (!bothValues.nprocesso) return false;
+    if (!bothValues.anoprocesso) return false;
+    if (!bothValues.nome) return false;
+    if(!formattedDate) return false;
+    if(formattedDate.length < 10) return false;
+    if(formattedDate.length > 10) return false;
+    if (!valuesEncerramento.ultimafl) return false;
+    if (!valuesEncerramento.primeirafl) return false;
+    if (!valuesEncerramento.volencerrado) return false;
+    if (!valuesEncerramento.proxvolume) return false;
+    return true;
+  }
+  const validateDate = () => {
+    if (!formattedDate) {
+      return commonMessage("Preencha este campo");
+    } else if(formattedDate.length < 10 ) {
+        return commonMessage("Certifique a data")
+      } else if (formattedDate.length > 10) {
+        return errorMessage("Formato incorreto") 
+      }
+      return successMessage("OK!")
+      }
 
+  const validateRomanInputVolEncerrado = () => {
+  const volencerradoValidate = validateRoman(valuesEncerramento.volencerrado);
+  if (!volencerradoValidate) {
+    return errorMessage("O campo só aceita algarismo romano");
+  } else if(!valuesEncerramento.volencerrado) {
+    return commonMessage("Preencha este campo")
+  }
+  return successMessage("OK!"); 
+};
+
+const validateRomanInputProxVol = () => {
+  const proxvolValidate = validateRoman(valuesEncerramento.proxvolume);
+  if (!proxvolValidate) {
+    return errorMessage("O campo só aceita algarismo romano");
+  } else if(!valuesEncerramento.proxvolume) {
+    return commonMessage("Preencha este campo")
+  }
+  return successMessage("OK!"); 
+}
+
+  const successMessage = (message) => {
+    return (
+    <p className="FieldSuccess">{message}</p>
+    );
+  }
+  const errorMessage = (message) => {
+    return (
+    <p className="FieldError" >{message}</p>
+    );
+  }
+  const commonMessage = (message) => {
+    return (
+    <p className="FieldCommon" >{message}</p>
+    );
+  }
   const handleVoltar = () => {
     setHideDivAbertura(true);
     setHideDivEncerramento(false);
@@ -234,13 +286,16 @@ export default function Abertura() {
       <h2>Termo de Encerramento</h2>
       <label htmlFor="nfolha">Nº da folha:</label>
       <input name="nfolha" type="text" id="nfolha" onChange={handleValues} />
+      {!bothValues.nfolha ? commonMessage("Preencha este campo") : successMessage("OK!")}
       <div className="input-container">
         <label htmlFor="nprocesso">Nº processo:</label>
         <input name="nprocesso" id="nprocesso" onChange={handleValues} />
+      {!bothValues.nprocesso ? commonMessage("Preencha este campo") : successMessage("OK!")}
       </div>
       <div className="input-container">
         <label htmlFor="anoprocesso">Ano processo:</label>
         <input name="anoprocesso" id="anoprocesso" onChange={handleValues} />
+      {!bothValues.anoprocesso ? commonMessage("Preencha este campo") : successMessage("OK!")}
       </div>
       <div className="input-container-date">
         <label htmlFor="teste">Data de abertura:</label>
@@ -251,11 +306,12 @@ export default function Abertura() {
           onChange={handleFormattedDate}
           value={formattedDate}
         />
-        <TiDelete className="ti-delete" onClick={() => handleDeleteDate()} />
+        {validateDate()}
       </div>
       <div className="input-container-nome">
         <label htmlFor="nome">Nome:</label>
         <input name="nome" id="nome" onChange={handleValues} />
+      {!bothValues.nome ? commonMessage("Preencha este campo") : successMessage("OK!")}
       </div>
       <div className="input-container-folha">
         <label htmlFor="primeirafl">Nº primeira folha:</label>
@@ -264,10 +320,12 @@ export default function Abertura() {
           id="primeirafl"
           onChange={handleEncerramento}
         />
+      {!valuesEncerramento.primeirafl ? commonMessage("Preencha este campo") : successMessage("OK!")}
       </div>
       <div className="input-container-folha">
         <label htmlFor="ultimafl">Nº última folha:</label>
         <input name="ultimafl" id="ultimafl" onChange={handleEncerramento} />
+        {!valuesEncerramento.ultimafl ? commonMessage("Preencha este campo") : successMessage("OK!")}
       </div>
       <div className="input-container-vol">
         <label htmlFor="volencerrado">Volume encerrado:</label>
@@ -277,6 +335,7 @@ export default function Abertura() {
           id="volencerrado"
           onChange={handleEncerramento}
         />
+        {validateRomanInputVolEncerrado()}
       </div>
       <div className="input-container-vol">
         <label htmlFor="proxvolume">Volume que vai ser aberto:</label>
@@ -285,10 +344,11 @@ export default function Abertura() {
           id="proxvolume"
           onChange={handleEncerramento}
         />
+        {validateRomanInputProxVol()}
       </div>
       <div>
         <button
-          disabled={false}
+          disabled={!validateForm()}
           onClick={() => handleTermoEncerramento()}
         >
           Gerar termo de abertura
@@ -334,6 +394,7 @@ export default function Abertura() {
         <label htmlFor="teste">Data de abertura:</label>
         <input
           disabled={disableInput}
+          style={{color:colorDisable}}
           className="input-date"
           name="dataAbertura"
           type="text"
