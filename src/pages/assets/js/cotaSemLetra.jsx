@@ -3,6 +3,9 @@ import { jsPDF } from "jspdf";
 import "./../css/cota.css";
 import Logo from "./../../../img/brasao_osasco.png";
 import { useLocation } from "react-router-dom";
+import { commonMessage, successMessage } from "../../../utils/MessageHelpers";
+import { generateCotaSemLetra } from './../../../pdf/cota/cotaSemLetras'
+
 
 export default function CotaSemLetras() {
   const [assinantes, setAssinantes] = useState("");
@@ -20,6 +23,15 @@ export default function CotaSemLetras() {
         ...prevCotaValues,
         [e.target.name]: e.target.value,
     }))
+  }
+
+  const validateCota = () => {
+    if(!cotaValues.secretaria) return false;
+    if(!cotaValues.cargo) return false;
+    if(!cotaValues.volaberto) return false;
+    if(!cotaValues.flpedido) return false;
+    if(!assinantes) return false;
+    return true;
   }
 
   const generateCota = () => {
@@ -89,15 +101,26 @@ export default function CotaSemLetras() {
     <div className="div-cota">
       <h1>Cota</h1>
       <label htmlFor="flcota">Nº folha</label>
-      <input name="flcota" id="flcota" onChange={handleCotaValues} defaultValue={Number(state.nfolha) + 2} disabled={true} style={{color: "gray"}} />
+      <input 
+      name="flcota" 
+      id="flcota" 
+      onChange={handleCotaValues} 
+      defaultValue={Number(state.nfolha) + 2} 
+      disabled={true} 
+      style={{color: "gray"}} 
+      />
       <label htmlFor="secretaria" >Secretaria</label>
       <input name="secretaria" id="secretaria" onChange={handleCotaValues}/>
+      {!cotaValues.secretaria ? commonMessage("Preencha este campo") : successMessage("OK!")}
       <label htmlFor="cargo" >Cargo</label>
       <input name="cargo" id="cargo" onChange={handleCotaValues}/>
+      {!cotaValues.cargo ? commonMessage("Preencha este campo") : successMessage("OK!")}
       <label htmlFor="volaberto" >{`Volume(s) aberto`}</label>
       <input name="volaberto" id="volaberto" onChange={handleCotaValues}/>
+      {!cotaValues.volaberto ? commonMessage("Preencha este campo") : successMessage("OK!")}
       <label htmlFor="flpedido" >Nº folha pedido para abertura</label>
       <input name="flpedido" id="flpedido" onChange={handleCotaValues}/>
+      {!cotaValues.flpedido ? commonMessage("Preencha este campo") : successMessage("OK!")}
       <label>Assinantes</label>
       <select
         value={assinantes}
@@ -108,8 +131,20 @@ export default function CotaSemLetras() {
         <option>Gilmara Pereira dos Santos</option>
         <option>Jeni Moreira de Andrade Nery</option>
       </select>
+      {assinantes === '' ? commonMessage("Preencha este campo") : successMessage("OK!")}
       <div>
-        <button onClick={() => generateCota()}>Gerar pdf</button>
+        <button disabled={!validateCota()} onClick={() => generateCotaSemLetra(
+          cotaValues.flcota,
+          state.nprocesso,
+          state.anoprocesso,
+          state.date,
+          state.nome,
+          cotaValues.secretaria,
+          cotaValues.cargo,
+          assinantes,
+          cotaValues.volaberto,
+          cotaValues.flpedido
+        )}>Gerar pdf</button>
       </div>
     </div>
   );
