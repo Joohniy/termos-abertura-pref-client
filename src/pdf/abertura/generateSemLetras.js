@@ -12,7 +12,7 @@ export const generatePDFSemLetras = (nfolha, nprocesso, anoprocesso, formattedDa
     doc.text(stringSecretaria, 67, 33);
     doc.setFontSize(13);
     doc.setFont("Arial");
-    const stringPapelInformacao = `Papel para informação, rubricado como folha nº ${Number(nfolha) + 2}`;
+    const stringPapelInformacao = `Papel para informação, rubricado como folha nº ${Number(nfolha)}`;
     const stringProcessoInformaçao = `Do processo   ${nprocesso}/${anoprocesso}   de   ${formattedDate}     Servidor(a): ${nome}`;
     doc.text(
       stringPapelInformacao,
@@ -65,9 +65,7 @@ export const generatePDFSemLetras = (nfolha, nprocesso, anoprocesso, formattedDa
     doc.text(stringSecretariaAbertura, 67, 33);
     doc.setFontSize(13);
     doc.setFont("Arial");
-    const stringPapelInformacaoAbertura = `Papel para informação, rubricado como folha nº ${
-      Number(nfolha) + 1
-    }`;
+    const stringPapelInformacaoAbertura = `Papel para informação, rubricado como folha nº ${Number(nfolha) + 1}`;
     const stringProcessoInformaçaoAbertura = `Do processo   ${nprocesso}/${anoprocesso}   de   ${formattedDate}     Servidor(a): ${nome}`;
     doc.text(
       stringPapelInformacaoAbertura,

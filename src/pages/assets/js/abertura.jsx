@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import validateRoman from "../../../utils/roman";
 import { errorMessage } from "../../../utils/MessageHelpers";
 import { generatePDFComLetras } from "../../../pdf/abertura/generateComLetras";
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function Abertura() {
   const [formattedDate, setformattedDate] = useState("");
@@ -78,34 +78,49 @@ export default function Abertura() {
       [e.target.name]: e.target.value,
     }));
   };
-  
   const createEncerramentoSchema = z.object({
     nfolha: z.string().min(1, "Preencha este campo"),
     nprocesso: z.string().min(1, "Preencha este campo"),
     anoprocesso: z.string().min(1, "Preencha este campo"),
-    formattedDate: z.string().min(1, "Preencha este campo"),
+    dataAbertura: z
+      .string()
+      .min(1, "Preencha este campo")
+      .refine((data) => data.length === 10, { message: "Formato incorreto" }),
     nome: z.string().min(1, "Preencha este campo"),
     primeirafl: z.string().min(1, "Preencha este campo"),
     ultimafl: z.string().min(1, "Preencha este campo"),
     volencerrado: z.string().min(1, "Preencha este campo"),
     proxvolume: z.string().min(1, "Preencha este campo"),
   });
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(createEncerramentoSchema)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(createEncerramentoSchema),
   });
-  console.log(errors)
+
   const handleTermoEncerramento = () => {
-    if (bothValues.nfolha) {
-      setHideDivAbertura(false);
-      setHideDivEncerramento(true);
-      setDisableInput(true);
-      setColorDisable("grey");
+    if (
+      bothValues.nfolha && 
+      bothValues.nprocesso && 
+      bothValues.anoprocesso && 
+      formattedDate &&
+      bothValues.nome &&
+      valuesEncerramento.primeirafl &&
+      valuesEncerramento.ultimafl && 
+      valuesEncerramento.volencerrado &&
+      valuesEncerramento.proxvolume 
+      ) {
+    setHideDivAbertura(false);
+    setHideDivEncerramento(true);
+    setDisableInput(true);
     }
     setData({
       nfolha: bothValues.nfolha,
       nprocesso: bothValues.nprocesso,
       anoprocesso: bothValues.anoprocesso,
-      formattedDate: formattedDate,
+      dataAbertura: formattedDate,
       nome: bothValues.nome,
       primeirafl: valuesEncerramento.primeirafl,
       ultimafl: valuesEncerramento.ultimafl,
@@ -114,17 +129,16 @@ export default function Abertura() {
     });
   };
   const validateDate = () => {
-    if (errors.formattedDate) {
-       return <p className="FieldError">{errors.formattedDate.message}</p>
-    }
-    if (formattedDate.length > 10) {
-      return errorMessage("Formato incorreto");
+    if (errors.dataAbertura) {
+      return <p className="FieldError">{errors.dataAbertura.message}</p>;
+    } else {
+      return null;
     }
   };
   const validateRomanInputVolEncerrado = () => {
     const volencerradoValidate = validateRoman(valuesEncerramento.volencerrado);
     if (errors.volencerrado) {
-      return <p className="FieldError">{errors.volencerrado.message}</p>
+      return <p className="FieldError">{errors.volencerrado.message}</p>;
     } else if (!volencerradoValidate) {
       return errorMessage("O campo só aceita algarismo romano");
     }
@@ -132,8 +146,8 @@ export default function Abertura() {
   const validateRomanInputProxVol = () => {
     const proxvolValidate = validateRoman(valuesEncerramento.proxvolume);
     if (errors.proxvolume) {
-      return <p className="FieldError">{errors.proxvolume.message}</p>
-    } else if(!proxvolValidate) {
+      return <p className="FieldError">{errors.proxvolume.message}</p>;
+    } else if (!proxvolValidate) {
       return errorMessage("O campo só aceita algarismo romano");
     }
   };
@@ -154,94 +168,104 @@ export default function Abertura() {
   const encerramento = (
     <div hidden={hideDivEncerramento} className="div-encerramento">
       <h2>Termo de Encerramento</h2>
-      <form onSubmit={handleSubmit(handleTermoEncerramento)} >
-      <label htmlFor="nfolha">Nº da folha:</label>
-      <input 
-      {...register("nfolha")} 
-      type="text" 
-      id="nfolha" 
-      onChange={handleValues} />
-      {errors.nfolha && <p className="FieldError">{errors.nfolha.message}</p>}
-      <div className="input-container">
-        <label htmlFor="nprocesso">Nº processo:</label>
-        <input 
-        {...register("nprocesso")}
-        id="nprocesso" 
-        onChange={handleValues} />
-        {errors.nprocesso && <p className="FieldError">{errors.nprocesso.message}</p>}
-      </div>
-      <div className="input-container">
-        <label htmlFor="anoprocesso">Ano processo:</label>
+      <form onSubmit={handleSubmit(handleTermoEncerramento)}>
+        <label htmlFor="nfolha">Nº da folha:</label>
         <input
-         {...register("anoprocesso")} 
-         id="anoprocesso" 
-         onChange={handleValues} />
-        {errors.anoprocesso && <p className="FieldError">{errors.anoprocesso.message}</p>}
-      </div>
-      <div className="input-container-date">
-        <label htmlFor="data">Data de abertura:</label>
-        <input
-          id="data"
-          className="input-date"
-          {...register("dataAbertura")} 
           type="text"
-          onChange={handleFormattedDate}
-          value={formattedDate}
+          id="nfolha"
+          {...register("nfolha")}
+          onChange={handleValues}
         />
-        {validateDate()}
-      </div>
-      <div className="input-container-nome">
-        <label htmlFor="nome">Nome:</label>
-        <input 
-        {...register("nome")}  
-        id="nome" 
-        onChange={handleValues} />
-        {errors.nome && <p className="FieldError">{errors.nome.message}</p>}
-      </div>
-      <div className="input-container-folha">
-        <label htmlFor="primeirafl">Nº primeira folha:</label>
-        <input
-          {...register("primeirafl")}
-          id="primeirafl"
-          onChange={handleEncerramento}
-        />
-        {errors.primeirafl && <p className="FieldError">{errors.primeirafl.message}</p>}
-      </div>
-      <div className="input-container-folha">
-        <label htmlFor="ultimafl">Nº última folha:</label>
-        <input 
-        {...register("ultimafl")} 
-        id="ultimafl" 
-        onChange={handleEncerramento} />
-        {errors.ultimafl && <p className="FieldError">{errors.ultimafl.message}</p>}
-      </div>
-      <div className="input-container-vol">
-        <label htmlFor="volencerrado">Volume encerrado:</label>
-        <input
-          {...register("volencerrado")}
-          className="input-volencerrado"
-          id="volencerrado"
-          onChange={handleEncerramento}
-        />
-        {validateRomanInputVolEncerrado()}
-      </div>
-      <div className="input-container-vol">
-        <label htmlFor="proxvolume">Volume que vai ser aberto:</label>
-        <input
-          {...register("proxvolume")}
-          id="proxvolume"
-          onChange={handleEncerramento}
-        />
-        {validateRomanInputProxVol()}
-      </div>
-      <div>
-        <button
-          onClick={() => handleTermoEncerramento()}
-        >
-          Gerar termo de abertura
-        </button>
-      </div>
-    </form>
+        {errors.nfolha && <p className="FieldError">{errors.nfolha.message}</p>}
+        <div className="input-container">
+          <label htmlFor="nprocesso">Nº processo:</label>
+          <input
+            id="nprocesso"
+            {...register("nprocesso")}
+            onChange={handleValues}
+          />
+          {errors.nprocesso && (
+            <p className="FieldError">{errors.nprocesso.message}</p>
+          )}
+        </div>
+        <div className="input-container">
+          <label htmlFor="anoprocesso">Ano processo:</label>
+          <input
+            id="anoprocesso"
+            {...register("anoprocesso")}
+            onChange={handleValues}
+          />
+          {errors.anoprocesso && (
+            <p className="FieldError">{errors.anoprocesso.message}</p>
+          )}
+        </div>
+        <div className="input-container-date">
+          <label htmlFor="data">Data de abertura:</label>
+          <input
+            id="data"
+            className="input-date"
+            type="text"
+            value={formattedDate}
+            {...register("dataAbertura")}
+            onChange={handleFormattedDate}
+          />
+          {validateDate()}
+        </div>
+        <div className="input-container-nome">
+          <label htmlFor="nome">Nome:</label>
+          <input 
+          id="nome" 
+          {...register("nome")} 
+          onChange={handleValues} />
+          {errors.nome && <p className="FieldError">{errors.nome.message}</p>}
+        </div>
+        <div className="input-container-folha">
+          <label htmlFor="primeirafl">Nº primeira folha:</label>
+          <input
+            id="primeirafl"
+            {...register("primeirafl")}
+            onChange={handleEncerramento}
+          />
+          {errors.primeirafl && (
+            <p className="FieldError">{errors.primeirafl.message}</p>
+          )}
+        </div>
+        <div className="input-container-folha">
+          <label htmlFor="ultimafl">Nº última folha:</label>
+          <input
+            id="ultimafl"
+            {...register("ultimafl")}
+            onChange={handleEncerramento}
+          />
+          {errors.ultimafl && (
+            <p className="FieldError">{errors.ultimafl.message}</p>
+          )}
+        </div>
+        <div className="input-container-vol">
+          <label htmlFor="volencerrado">Volume encerrado:</label>
+          <input
+            className="input-volencerrado"
+            id="volencerrado"
+            {...register("volencerrado")}
+            onChange={handleEncerramento}
+          />
+          {validateRomanInputVolEncerrado()}
+        </div>
+        <div className="input-container-vol">
+          <label htmlFor="proxvolume">Volume que vai ser aberto:</label>
+          <input
+            id="proxvolume"
+            {...register("proxvolume")}
+            onChange={handleEncerramento}
+          />
+          {validateRomanInputProxVol()}
+        </div>
+        <div>
+          <button onClick={() => handleTermoEncerramento()}>
+            Gerar termo de abertura
+          </button>
+        </div>
+      </form>
     </div>
   );
   const abertura = (

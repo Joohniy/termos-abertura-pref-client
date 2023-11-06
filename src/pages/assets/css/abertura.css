@@ -23,13 +23,12 @@ label {
     cursor: pointer; 
     margin-top: 30px;
   }
-  
-  button:hover {
-    color: black;
-  }
-  
+    
   button.generate-pdf {
     background-color: #28a745; 
+  }
+  button:disabled {
+    background-color: grey;
   }
 
 .div-encerramento {
