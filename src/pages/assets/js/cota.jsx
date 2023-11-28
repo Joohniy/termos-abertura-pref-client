@@ -2,7 +2,11 @@ import { useState } from "react";
 import "./../css/cota.css";
 import { useLocation } from "react-router-dom";
 import { successMessage, commonMessage } from "../../../utils/MessageHelpers";
-import { generateCotaLetras } from '../../../pdf/cota/cotaComLetras'
+import { generateCotaLetras } from '../../../pdf/cota/cotaComLetras';
+import { z } from 'zod';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 
 export default function Cota() {
   const [assinantes, setAssinantes] = useState("");

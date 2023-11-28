@@ -103,7 +103,6 @@ export default function AberturaSemLetras() {
   });
 
   const handleTermoEncerramento = () => {
-    console.log(data)
     if (
       bothValues.nfolha &&
       bothValues.nprocesso &&

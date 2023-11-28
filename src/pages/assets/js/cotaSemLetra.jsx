@@ -4,8 +4,8 @@ import "./../css/cota.css";
 import Logo from "./../../../img/brasao_osasco.png";
 import { useLocation } from "react-router-dom";
 import { commonMessage, successMessage } from "../../../utils/MessageHelpers";
-import { generateCotaSemLetra } from './../../../pdf/cota/cotaSemLetras'
-
+import { generateCotaSemLetra } from './../../../pdf/cota/cotaSemLetras';
+ 
 
 export default function CotaSemLetras() {
   const [assinantes, setAssinantes] = useState("");
